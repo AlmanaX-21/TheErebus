@@ -18,6 +18,7 @@ public class ModBiomeLayerTypes {
     public static final DeferredHolder<BiomeLayerType, BiomeLayerType> RANDOM_BIOMES = registerType("random_biomes", () -> () -> RandomBiomeLayer.Factory.CODEC);
     public static final DeferredHolder<BiomeLayerType, BiomeLayerType> KEY_BIOMES = registerType("key_biomes", () -> () -> KeyBiomeLayer.Factory.CODEC);
     public static final DeferredHolder<BiomeLayerType, BiomeLayerType> COMPANION_BIOMES = registerType("companion_biomes", () -> () -> CompanionBiomeLayer.Factory.CODEC);
+    public static final DeferredHolder<BiomeLayerType, BiomeLayerType> SURROUNDED_SUB_BIOMES = registerType("surrounded_sub_biomes", () -> () -> SurroundedSubBiomeLayer.Factory.CODEC);
     public static final DeferredHolder<BiomeLayerType, BiomeLayerType> ZOOM = registerType("zoom", () -> () -> ZoomLayer.Factory.CODEC);
     public static final DeferredHolder<BiomeLayerType, BiomeLayerType> STABILIZE = registerType("stabilize", () -> () -> StabilizeLayer.Factory.CODEC);
 

@@ -30,7 +30,10 @@ public class RandomBiomeLayer implements AreaTransformer0 {
 
     @Override
     public ResourceKey<Biome> applyPixel(RandomContext random, int x, int z) {
-        if(random.nextRandom(rareBiomeChance) == 0) return rareBiomes.get(random.nextRandom(rareBiomes.size()));
+        if (!rareBiomes.isEmpty() && rareBiomeChance > 0 && random.nextRandom(rareBiomeChance) == 0) {
+            return rareBiomes.get(random.nextRandom(rareBiomes.size()));
+        }
+
         return commonBiomes.get(random.nextRandom(commonBiomes.size()));
     }
 

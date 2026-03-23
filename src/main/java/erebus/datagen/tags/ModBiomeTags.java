@@ -43,7 +43,16 @@ public class ModBiomeTags extends BiomeTagsProvider {
                 .add(ModBiomes.ULTERIOR_OUTBACK.getResourceKey());
         tag(ModTags.HAS_LOCUST_SHRINE)
                 .add(ModBiomes.SUBTERRANEAN_SAVANNAH.getResourceKey());
-        tag(ModTags.HAS_SPIDER_DUNGEON);
+        tag(ModTags.HAS_SPIDER_DUNGEON)
+                .add(ModBiomes.ELYSIAN_FIELDS.getResourceKey())
+                .add(ModBiomes.ELYSIAN_FOREST.getResourceKey())
+                .add(ModBiomes.FUNGAL_FOREST.getResourceKey())
+                .add(ModBiomes.PETRIFIED_FOREST.getResourceKey())
+                .add(ModBiomes.SUBMERGED_SWAMP.getResourceKey())
+                .add(ModBiomes.SUBTERRANEAN_SAVANNAH.getResourceKey())
+                .add(ModBiomes.ULTERIOR_OUTBACK.getResourceKey())
+                .add(ModBiomes.UNDERGROUND_JUNGLE.getResourceKey())
+                .add(ModBiomes.VOLCANIC_DESERT.getResourceKey());
         tag(ModTags.HAS_SWAMP_HUT)
                 .add(ModBiomes.SUBMERGED_SWAMP.getResourceKey());
         tag(ModTags.HAS_WASP_DUNGEON)

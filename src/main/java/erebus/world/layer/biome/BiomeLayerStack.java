@@ -1,14 +1,15 @@
 package erebus.world.layer.biome;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import erebus.Erebus;
 import erebus.datagen.ModRegistries;
 import erebus.registries.world.ModBiomeLayerTypes;
 import erebus.registries.world.ModBiomes;
 import erebus.world.biome.util.TerrainBuilder;
-import erebus.world.layer.*;
+import erebus.world.layer.RandomBiomeLayer;
+import erebus.world.layer.SurroundedSubBiomeLayer;
+import erebus.world.layer.ZoomLayer;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.Registry;
@@ -17,8 +18,6 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
-
-import java.util.List;
 
 public class BiomeLayerStack {
     public static final Codec<BiomeLayerFactory> DISPATCH_CODEC = ModBiomeLayerTypes.CODEC.dispatch("layer_type", BiomeLayerFactory::getType, BiomeLayerType::getCodec);
@@ -32,39 +31,38 @@ public class BiomeLayerStack {
     }
 
     public static void bootstrap(BootstrapContext<BiomeLayerFactory> context) {
-        BiomeLayerFactory biomes = new RandomBiomeLayer.Factory(1L, 15, ImmutableList.of(
+        ImmutableList.Builder<ResourceKey<Biome>> weightedBiomes = ImmutableList.builder();
+        addWeightedBiome(weightedBiomes, ModBiomes.UNDERGROUND_JUNGLE.getResourceKey(), 22);
+        addWeightedBiome(weightedBiomes, ModBiomes.VOLCANIC_DESERT.getResourceKey(), 16);
+        addWeightedBiome(weightedBiomes, ModBiomes.SUBTERRANEAN_SAVANNAH.getResourceKey(), 20);
+        addWeightedBiome(weightedBiomes, ModBiomes.ELYSIAN_FIELDS.getResourceKey(), 20);
+        addWeightedBiome(weightedBiomes, ModBiomes.ULTERIOR_OUTBACK.getResourceKey(), 15);
+        addWeightedBiome(weightedBiomes, ModBiomes.FUNGAL_FOREST.getResourceKey(), 12);
+        addWeightedBiome(weightedBiomes, ModBiomes.SUBMERGED_SWAMP.getResourceKey(), 20);
+        addWeightedBiome(weightedBiomes, ModBiomes.PETRIFIED_FOREST.getResourceKey(), 15);
+
+        BiomeLayerFactory biomes = new RandomBiomeLayer.Factory(100L, 1, weightedBiomes.build(), ImmutableList.of());
+        biomes = new ZoomLayer.Factory(2000L, false, Holder.direct(biomes));
+        biomes = new SurroundedSubBiomeLayer.Factory(
+                101L,
                 ModBiomes.ELYSIAN_FIELDS.getResourceKey(),
-                ModBiomes.FUNGAL_FOREST.getResourceKey(),
-                ModBiomes.SUBMERGED_SWAMP.getResourceKey(),
-                ModBiomes.SUBTERRANEAN_SAVANNAH.getResourceKey(),
-                ModBiomes.UNDERGROUND_JUNGLE.getResourceKey()
-        ), ImmutableList.of(
-                ModBiomes.ULTERIOR_OUTBACK.getResourceKey(),
-                ModBiomes.PETRIFIED_FOREST.getResourceKey(),
-                ModBiomes.VOLCANIC_DESERT.getResourceKey()
-        ));
-
-        biomes = new KeyBiomeLayer.Factory(1000L, List.of(
-                ModBiomes.ULTERIOR_OUTBACK.getResourceKey(),
-                ModBiomes.VOLCANIC_DESERT.getResourceKey(),
                 ModBiomes.ELYSIAN_FOREST.getResourceKey(),
-                ModBiomes.PETRIFIED_FOREST.getResourceKey()
-        ), Holder.direct(biomes));
-        biomes = new CompanionBiomeLayer.Factory(1000L, List.of(
-                Pair.of(ModBiomes.ELYSIAN_FIELDS.getResourceKey(), ModBiomes.ELYSIAN_FOREST.getResourceKey())
-        ), Holder.direct(biomes));
-
-        biomes = new ZoomLayer.Factory(1000L, false, Holder.direct(biomes));
-        biomes = new ZoomLayer.Factory(1001L, false, Holder.direct(biomes));
-
-        biomes = new StabilizeLayer.Factory(700L, Holder.direct(biomes));
-
-        biomes = new ZoomLayer.Factory(1002L, false, Holder.direct(biomes));
-        biomes = new ZoomLayer.Factory(1003L, false, Holder.direct(biomes));
-        biomes = new ZoomLayer.Factory(1004L, false, Holder.direct(biomes));
-        biomes = new ZoomLayer.Factory(1005L, false, Holder.direct(biomes));
+                10,
+                Holder.direct(biomes)
+        );
+        biomes = new ZoomLayer.Factory(2100L, false, Holder.direct(biomes));
+        biomes = new ZoomLayer.Factory(2101L, false, Holder.direct(biomes));
+        biomes = new ZoomLayer.Factory(2102L, false, Holder.direct(biomes));
+        biomes = new ZoomLayer.Factory(2103L, false, Holder.direct(biomes));
+        biomes = new ZoomLayer.Factory(2104L, false, Holder.direct(biomes));
 
         context.register(RANDOM_EREBUS_BIOMES, biomes);
+    }
+
+    private static void addWeightedBiome(ImmutableList.Builder<ResourceKey<Biome>> builder, ResourceKey<Biome> biome, int weight) {
+        for (int i = 0; i < weight; i++) {
+            builder.add(biome);
+        }
     }
 
     public static void bootstrapData(BootstrapContext<BiomeDensitySource> context) {
